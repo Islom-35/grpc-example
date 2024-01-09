@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package post;
+
+option go_package = "/pb";
+
+
+service SaverService {
+  rpc CollectPosts(CollectPostsRequest) returns (CollectPostsResponse) {}
+}
+
+
+message CollectPostsResponse {
+  string message = 1;
+}
+
+message CollectPostsRequest {
+}
