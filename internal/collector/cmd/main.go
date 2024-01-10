@@ -32,7 +32,7 @@ func grpcServer() {
 	defer db.Close()
 
 	postRepo := postAdapter.NewPostRepository(db)
-	postProvider, err := postAdapter.NewClient(time.Second * 25)
+	postProvider, err := postAdapter.NewClient(time.Second * 20)
 	if err != nil {
 		log.Println(err)
 	}
@@ -52,6 +52,5 @@ func grpcServer() {
 
 	log.Println("listening on port: ", 5050)
 
-	log.Println("sdf")
 
 }

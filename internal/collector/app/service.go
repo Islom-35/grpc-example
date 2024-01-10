@@ -44,10 +44,12 @@ func (p *postService) Save(context.Context, *pb.CollectPostsRequest) (*pb.Collec
 		err := p.repo.Save(post)
 		if err != nil {
 			fmt.Println("Error saving post:", err)
+		}else{
+			count++
 		}
-		count++
+		
 	}
 
-	fmt.Println("Total Posts:", len(allPosts), count)
-	return &pb.CollectPostsResponse{Message: "ok"}, nil
+	fmt.Println("Total Posts:", count)
+	return &pb.CollectPostsResponse{}, nil
 }

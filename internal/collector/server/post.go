@@ -11,7 +11,6 @@ type PostServer struct {
 	pb.UnimplementedSaverServiceServer
 }
 
-
 func NewPostServer(service app.PostService) PostServer {
 	return PostServer{
 		service: service,

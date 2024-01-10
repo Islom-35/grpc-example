@@ -13,12 +13,12 @@ import (
 type Server struct {
 	grpcSrv    *grpc.Server
 	postServer pb.SaverServiceServer
-	pb.UnimplementedSaverServiceServer
 }
 
 func New(postServer pb.SaverServiceServer) Server {
 	return Server{
 		grpcSrv:    grpc.NewServer(),
+		postServer: postServer,
 	}
 }
 
