@@ -1,0 +1,4 @@
+./collector.pb.go
+./collector_grpc.pb.go
+./post.pb.go
+./post_grpc.pb.go

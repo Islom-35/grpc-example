@@ -20,6 +20,26 @@ services:
       GOCACHE: /go-cache
     entrypoint: ["./docker/dev/entrypoint.sh", "./internal/collector/cmd/main.go"]
 
+  post_app:
+    build:
+      context: ./docker/dev
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - ./.go/pkg:/go/pkg
+      - ./.go-cache:/go-cache
+    working_dir: /app
+    ports:
+      - "5040:5040"
+    # networks:
+    #   - app
+    env_file:
+      - .env
+    environment:
+      GOCACHE: /go-cache
+    entrypoint: ["./docker/dev/entrypoint.sh", "./internal/post-grud/cmd/main.go"]
+
+
   api_gateway:
     build:
       context: ./docker/dev
