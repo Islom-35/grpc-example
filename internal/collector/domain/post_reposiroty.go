@@ -1,9 +1,9 @@
 package domain
 
 type PostRepository interface {
-	Save(data Data) error
+	Save(data Post) error
 }
 
 type PostProvider interface {
-	GetPosts(page string) (PostsResponse, error)
+	GetPosts(page int) (PostsResponse, error)
 }

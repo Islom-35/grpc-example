@@ -5,6 +5,13 @@ type Data struct {
 	UserID int    `json:"user_id"`
 	Title  string `json:"title"`
 	Body   string `json:"body"`
+}
+
+type Post struct {
+	ID     int   
+	UserID int    
+	Title  string 
+	Body   string 
 	Page   int
 }
 

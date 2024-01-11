@@ -7,7 +7,8 @@ import (
 	domain "imantask/internal/collector/domain"
 	"io"
 	"net/http"
-	
+	"strconv"
+
 	"time"
 )
 
@@ -28,8 +29,8 @@ func NewClient(timeout time.Duration) (*Client, error) {
 
 }
 
-func (c Client) GetPosts(page string) (domain.PostsResponse, error) {
-	url := "https://gorest.co.in/public/v1/posts?page=" + page
+func (c Client) GetPosts(page int) (domain.PostsResponse, error) {
+	url := "https://gorest.co.in/public/v1/posts?page=" + strconv.Itoa(page)
 	resp, err := c.Client.Get(url)
 	if err != nil {
 		return domain.PostsResponse{}, err

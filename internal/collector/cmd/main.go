@@ -52,5 +52,4 @@ func grpcServer() {
 
 	log.Println("listening on port: ", 5050)
 
-
 }
