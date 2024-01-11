@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"imantask/internal/collector/domain"
 	"imantask/internal/genproto/pb"
 	"sync"
@@ -28,7 +29,7 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 
 	numWorkers := 50
 
-	postAllChannel := make(chan []domain.Post, numWorkers)
+	postAllChannel := make(chan []domain.Data, numWorkers)
 
 	errorChannel := make(chan error, numWorkers)
 
@@ -36,27 +37,15 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 		wg.Add(1)
 		go func(page int) {
 			defer wg.Done()
-			posts := []domain.Post{}
 			datas, err := p.postProvider.GetPosts(page)
 			if err != nil {
 				errorChannel <- err
 				return
 			}
-
-			for _, post := range datas.Data {
-				postss := domain.Post{
-					ID:     post.ID,
-					UserID: post.UserID,
-					Title:  post.Title,
-					Body:   post.Body,
-					Page:   page,
-				}
-				posts = append(posts, postss)
-			}
-
-			postAllChannel <- posts
+			postAllChannel <- datas.Data
 		}(i)
 	}
+	
 
 	// Close postAllChannel after all goroutines have finished
 	go func() {
@@ -66,6 +55,7 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 
 	// Process data from postAllChannel
 	count := 0
+
 	for posts := range postAllChannel {
 		for _, post := range posts {
 			err := p.repo.Save(post)
@@ -75,6 +65,8 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 			count++
 		}
 	}
+
+	defer fmt.Println(count)
 
 	// Close errorChannel after all errors have been processed
 	close(errorChannel)

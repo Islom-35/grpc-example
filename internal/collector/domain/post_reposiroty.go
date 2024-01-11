@@ -1,7 +1,7 @@
 package domain
 
 type CollectorRepository interface {
-	Save(data Post) error
+	Save(data Data) error
 }
 
 type PostProvider interface {

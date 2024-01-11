@@ -51,3 +51,4 @@ func (c Client) GetPosts(page int) (domain.PostsResponse, error) {
 
 	return r, nil
 }
+

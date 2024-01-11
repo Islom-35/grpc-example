@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package post;
+
+option go_package = "/pb";
+
+service PostService {
+    rpc GetPostByID(ID)returns(PostResponse){}
+}
+
+message ID {
+    int32 ID =1;
+}
+
+message PostResponse {
+    int32 ID =1;
+    int32 user_id = 2;
+    string title = 3;
+    string body = 4;
+    int32 page = 5; 
+}
+
+// "id" SERIAL PRIMARY KEY NOT NULL,
+// "user_id" INTEGER NOT NULL,
+// "title" TEXT NOT NULL,
+// "body" TEXT NOT NULL,
+// "page" INTEGER NOT NULL

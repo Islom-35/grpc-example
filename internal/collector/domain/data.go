@@ -7,13 +7,6 @@ type Data struct {
 	Body   string `json:"body"`
 }
 
-type Post struct {
-	ID     int   
-	UserID int    
-	Title  string 
-	Body   string 
-	Page   int
-}
 
 type PostsResponse struct {
 	Meta struct {
