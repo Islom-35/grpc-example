@@ -6,17 +6,17 @@ import (
 	"imantask/internal/genproto/pb"
 )
 
-type PostServer struct {
-	service app.PostService
+type CollectorServer struct {
+	service app.CollectorService
 	pb.UnimplementedSaverServiceServer
 }
 
-func NewPostServer(service app.PostService) PostServer {
-	return PostServer{
+func NewCollectorServer(service app.CollectorService) CollectorServer {
+	return CollectorServer{
 		service: service,
 	}
 }
 
-func (h *PostServer) CollectPosts(ctx context.Context, req *pb.CollectPostsRequest) (*pb.CollectPostsResponse, error) {
+func (h *CollectorServer) CollectPosts(ctx context.Context, req *pb.CollectPostsRequest) (*pb.CollectPostsResponse, error) {
 	return h.service.Save(ctx, req)
 }

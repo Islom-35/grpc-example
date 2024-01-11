@@ -31,15 +31,15 @@ func grpcServer() {
 
 	defer db.Close()
 
-	postRepo := postAdapter.NewPostRepository(db)
+	collectorRepo := postAdapter.NewCollectorRepository(db)
 	postProvider, err := postAdapter.NewClient(time.Second * 20)
 	if err != nil {
 		log.Println(err)
 	}
-	postService := postApp.NewPostService(postRepo, postProvider)
-	postServer := server.NewPostServer(postService)
+	collectorService := postApp.NewCollectorService(collectorRepo, postProvider)
+	collectorServer := server.NewCollectorServer(collectorService)
 
-	srv := server.New(&postServer)
+	srv := server.New(&collectorServer)
 
 	log.Println("SERVER STARTED", time.Now())
 

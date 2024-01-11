@@ -4,27 +4,26 @@ import (
 	"context"
 	"imantask/internal/collector/domain"
 	"imantask/internal/genproto/pb"
-	"log"
 	"sync"
 )
 
-type PostService interface {
+type CollectorService interface {
 	Save(context.Context, *pb.CollectPostsRequest) (*pb.CollectPostsResponse, error)
 }
 
-type postService struct {
-	repo         domain.PostRepository
+type collectorService struct {
+	repo         domain.CollectorRepository
 	postProvider domain.PostProvider
 }
 
-func NewPostService(repo domain.PostRepository, postProvider domain.PostProvider) PostService {
-	return &postService{
+func NewCollectorService(repo domain.CollectorRepository, postProvider domain.PostProvider) CollectorService {
+	return &collectorService{
 		repo:         repo,
 		postProvider: postProvider,
 	}
 }
 
-func (p *postService) Save(ctx context.Context, req *pb.CollectPostsRequest) (*pb.CollectPostsResponse, error) {
+func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest) (*pb.CollectPostsResponse, error) {
 	var wg sync.WaitGroup
 
 	numWorkers := 50
@@ -70,7 +69,6 @@ func (p *postService) Save(ctx context.Context, req *pb.CollectPostsRequest) (*p
 	for posts := range postAllChannel {
 		for _, post := range posts {
 			err := p.repo.Save(post)
-			log.Println(post)
 			if err != nil {
 				errorChannel <- err
 			}

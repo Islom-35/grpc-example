@@ -1,6 +1,6 @@
 package domain
 
-type PostRepository interface {
+type CollectorRepository interface {
 	Save(data Post) error
 }
 
