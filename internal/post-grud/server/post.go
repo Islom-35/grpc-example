@@ -21,3 +21,7 @@ func (h *PostServer)GetPostByID(ctx context.Context,req *pb.ID)(*pb.PostResponse
 	
 	return h.service.GetPostByID(ctx,req)
 }
+
+func (h *PostServer)GetPage(ctx context.Context,req *pb.Page)(*pb.PostResponseList,error){
+	return h.service.GetPage(ctx,req)
+}

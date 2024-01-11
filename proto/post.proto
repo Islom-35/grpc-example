@@ -6,6 +6,15 @@ option go_package = "/ppb";
 
 service PostService {
     rpc GetPostByID(ID)returns(PostResponse){}
+    rpc GetPage(Page) returns(PostResponseList){}
+}
+message PostResponseList {
+    repeated PostResponse posts = 1;
+}
+
+message Page {
+    int32 page_number = 1; 
+    int32 page_size = 2;
 }
 
 message ID {

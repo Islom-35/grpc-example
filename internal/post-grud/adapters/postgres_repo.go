@@ -24,3 +24,31 @@ func (p *PostRepo) GetByID(ID int) (pb.PostResponse, error) {
 	}
 	return post, nil
 }
+
+func (p *PostRepo) GetPage(offset,limit int)(pb.PostResponseList, error){
+	query := `
+		SELECT id, user_id, title, body
+		FROM post
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := p.db.Query(query, limit, offset)
+	if err != nil {
+		return pb.PostResponseList{}, domain.ThisPageDoesNotExist
+	}
+	defer rows.Close()
+
+	posts :=pb.PostResponseList{}
+
+	for rows.Next() {
+
+		var post pb.PostResponse
+
+		err := rows.Scan(&post.ID, &post.UserId, &post.Title, &post.Body)
+
+		if err !=nil{
+			return pb.PostResponseList{},err
+		}
+		posts.Posts =append(posts.Posts, &post)
+	}
+	return posts,rows.Err()
+}
