@@ -28,3 +28,7 @@ func (h *PostServer)GetPage(ctx context.Context,req *pb.Page)(*pb.PostResponseLi
 func (h *PostServer)UpdatePostByID(ctx context.Context, req *pb.UpdateRequest)(*pb.Empty,error){
 	return h.service.UpdatePostByID(ctx,req)
 }
+
+func (h *PostServer) DeleteByID(ctx context.Context, req *pb.ID)(*pb.Empty,error){
+	return h.service.DeletePostByID(ctx,req)
+}

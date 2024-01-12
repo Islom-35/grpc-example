@@ -88,4 +88,10 @@ func (p *PostRepo) Update(inp pb.UpdateRequest) error{
 	return nil
 }
 
-
+func (p *PostRepo)Delete(ID int) error{
+	_,err := p.db.Exec("DELETE FROM post WHERE id=$1", ID)
+		if err!=nil{
+			return err
+		}
+	return nil
+}

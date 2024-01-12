@@ -10,6 +10,7 @@ type PostService interface {
 	GetPostByID(ctx context.Context, req *pb.ID) (*pb.PostResponse, error)
 	GetPage(ctx context.Context, req *pb.Page) (*pb.PostResponseList, error)
 	UpdatePostByID(ctx context.Context, req *pb.UpdateRequest) (*pb.Empty, error)
+	DeletePostByID(ctx context.Context, req *pb.ID)(*pb.Empty,error)
 }
 
 type postService struct {
@@ -51,3 +52,16 @@ func (p *postService) UpdatePostByID(ctx context.Context, req *pb.UpdateRequest)
 	return &pb.Empty{}, nil
 
 }
+
+func (p *postService) DeletePostByID(ctx context.Context, req *pb.ID)(*pb.Empty,error){
+
+	err := p.repo.Delete(int(req.ID))
+	
+	if err !=nil{
+		return nil,err
+	}
+	return &pb.Empty{}, nil
+}
+
+
+
