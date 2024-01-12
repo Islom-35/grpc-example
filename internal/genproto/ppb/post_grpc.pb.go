@@ -19,8 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PostService_GetPostByID_FullMethodName = "/post.PostService/GetPostByID"
-	PostService_GetPage_FullMethodName     = "/post.PostService/GetPage"
+	PostService_GetPostByID_FullMethodName    = "/post.PostService/GetPostByID"
+	PostService_GetPage_FullMethodName        = "/post.PostService/GetPage"
+	PostService_UpdatePostByID_FullMethodName = "/post.PostService/UpdatePostByID"
+	PostService_DeleteByID_FullMethodName     = "/post.PostService/DeleteByID"
 )
 
 // PostServiceClient is the client API for PostService service.
@@ -29,6 +31,8 @@ const (
 type PostServiceClient interface {
 	GetPostByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*PostResponse, error)
 	GetPage(ctx context.Context, in *Page, opts ...grpc.CallOption) (*PostResponseList, error)
+	UpdatePostByID(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Empty, error)
+	DeleteByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type postServiceClient struct {
@@ -57,12 +61,32 @@ func (c *postServiceClient) GetPage(ctx context.Context, in *Page, opts ...grpc.
 	return out, nil
 }
 
+func (c *postServiceClient) UpdatePostByID(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, PostService_UpdatePostByID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) DeleteByID(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, PostService_DeleteByID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
 	GetPostByID(context.Context, *ID) (*PostResponse, error)
 	GetPage(context.Context, *Page) (*PostResponseList, error)
+	UpdatePostByID(context.Context, *UpdateRequest) (*Empty, error)
+	DeleteByID(context.Context, *ID) (*Empty, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -75,6 +99,12 @@ func (UnimplementedPostServiceServer) GetPostByID(context.Context, *ID) (*PostRe
 }
 func (UnimplementedPostServiceServer) GetPage(context.Context, *Page) (*PostResponseList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPage not implemented")
+}
+func (UnimplementedPostServiceServer) UpdatePostByID(context.Context, *UpdateRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePostByID not implemented")
+}
+func (UnimplementedPostServiceServer) DeleteByID(context.Context, *ID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteByID not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -125,6 +155,42 @@ func _PostService_GetPage_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_UpdatePostByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).UpdatePostByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PostService_UpdatePostByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).UpdatePostByID(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_DeleteByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).DeleteByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PostService_DeleteByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).DeleteByID(ctx, req.(*ID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +205,14 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPage",
 			Handler:    _PostService_GetPage_Handler,
+		},
+		{
+			MethodName: "UpdatePostByID",
+			Handler:    _PostService_UpdatePostByID_Handler,
+		},
+		{
+			MethodName: "DeleteByID",
+			Handler:    _PostService_DeleteByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

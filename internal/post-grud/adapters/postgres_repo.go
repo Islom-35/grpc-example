@@ -1,8 +1,11 @@
 package adapters
 
 import (
+	"fmt"
 	pb "imantask/internal/genproto/ppb"
 	"imantask/internal/post-grud/domain"
+	"log"
+	"strings"
 
 	"github.com/jackc/pgx"
 )
@@ -33,7 +36,7 @@ func (p *PostRepo) GetPage(offset,limit int)(pb.PostResponseList, error){
 	`
 	rows, err := p.db.Query(query, limit, offset)
 	if err != nil {
-		return pb.PostResponseList{}, domain.ThisPageDoesNotExist
+		return pb.PostResponseList{}, domain.ErrorThisPageDoesNotExist
 	}
 	defer rows.Close()
 
@@ -52,3 +55,37 @@ func (p *PostRepo) GetPage(offset,limit int)(pb.PostResponseList, error){
 	}
 	return posts,rows.Err()
 }
+
+func (p *PostRepo) Update(inp pb.UpdateRequest) error{
+	
+	ID := int(inp.ID)
+
+	setValues :=make([]string,0)
+	args :=make([]interface{},0)
+	argID :=1
+	
+	if inp.Title != ""{ 
+		setValues = append(setValues, fmt.Sprintf("title=$%d",argID))
+		args = append(args, inp.Title)
+		argID++
+	}
+
+	if inp.Body != ""{ 
+		setValues = append(setValues, fmt.Sprintf("body=$%d",argID))
+		args = append(args, inp.Body)
+		argID++
+	}
+
+	setQuery:=strings.Join(setValues,",")
+
+	query := fmt.Sprintf("Update post Set %s where id=$%d", setQuery, argID)
+	args = append(args, ID)
+	_, err := p.db.Exec(query, args...)
+		if err!=nil{
+			log.Println(err)
+			return err
+		}
+	return nil
+}
+
+

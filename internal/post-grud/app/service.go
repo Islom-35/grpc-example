@@ -8,7 +8,8 @@ import (
 
 type PostService interface {
 	GetPostByID(ctx context.Context, req *pb.ID) (*pb.PostResponse, error)
-	GetPage(ctx context.Context,req *pb.Page)(*pb.PostResponseList,error)
+	GetPage(ctx context.Context, req *pb.Page) (*pb.PostResponseList, error)
+	UpdatePostByID(ctx context.Context, req *pb.UpdateRequest) (*pb.Empty, error)
 }
 
 type postService struct {
@@ -29,13 +30,24 @@ func (p *postService) GetPostByID(ctx context.Context, req *pb.ID) (*pb.PostResp
 	return &post, nil
 }
 
-func (p *postService) GetPage(ctx context.Context ,req *pb.Page) (*pb.PostResponseList,error){
+func (p *postService) GetPage(ctx context.Context, req *pb.Page) (*pb.PostResponseList, error) {
 	pageSize := req.PageSize
-	offset := (req.PageNumber -1) *pageSize
+	offset := (req.PageNumber - 1) * pageSize
 
-	posts, err := p.repo.GetPage(int(offset),int(pageSize))
+	posts, err := p.repo.GetPage(int(offset), int(pageSize))
 	if err != nil {
 		return &pb.PostResponseList{}, err
 	}
-	return &posts,nil
+	return &posts, nil
+}
+
+func (p *postService) UpdatePostByID(ctx context.Context, req *pb.UpdateRequest) (*pb.Empty, error) {
+
+	err := p.repo.Update(*req)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.Empty{}, nil
+
 }
