@@ -19,89 +19,89 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SaverService_CollectPosts_FullMethodName = "/post.SaverService/CollectPosts"
+	CollectorService_CollectPosts_FullMethodName = "/post.CollectorService/CollectPosts"
 )
 
-// SaverServiceClient is the client API for SaverService service.
+// CollectorServiceClient is the client API for CollectorService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type SaverServiceClient interface {
+type CollectorServiceClient interface {
 	CollectPosts(ctx context.Context, in *CollectPostsRequest, opts ...grpc.CallOption) (*CollectPostsResponse, error)
 }
 
-type saverServiceClient struct {
+type collectorServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewSaverServiceClient(cc grpc.ClientConnInterface) SaverServiceClient {
-	return &saverServiceClient{cc}
+func NewCollectorServiceClient(cc grpc.ClientConnInterface) CollectorServiceClient {
+	return &collectorServiceClient{cc}
 }
 
-func (c *saverServiceClient) CollectPosts(ctx context.Context, in *CollectPostsRequest, opts ...grpc.CallOption) (*CollectPostsResponse, error) {
+func (c *collectorServiceClient) CollectPosts(ctx context.Context, in *CollectPostsRequest, opts ...grpc.CallOption) (*CollectPostsResponse, error) {
 	out := new(CollectPostsResponse)
-	err := c.cc.Invoke(ctx, SaverService_CollectPosts_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, CollectorService_CollectPosts_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SaverServiceServer is the server API for SaverService service.
-// All implementations must embed UnimplementedSaverServiceServer
+// CollectorServiceServer is the server API for CollectorService service.
+// All implementations must embed UnimplementedCollectorServiceServer
 // for forward compatibility
-type SaverServiceServer interface {
+type CollectorServiceServer interface {
 	CollectPosts(context.Context, *CollectPostsRequest) (*CollectPostsResponse, error)
-	mustEmbedUnimplementedSaverServiceServer()
+	mustEmbedUnimplementedCollectorServiceServer()
 }
 
-// UnimplementedSaverServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedSaverServiceServer struct {
+// UnimplementedCollectorServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedCollectorServiceServer struct {
 }
 
-func (UnimplementedSaverServiceServer) CollectPosts(context.Context, *CollectPostsRequest) (*CollectPostsResponse, error) {
+func (UnimplementedCollectorServiceServer) CollectPosts(context.Context, *CollectPostsRequest) (*CollectPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CollectPosts not implemented")
 }
-func (UnimplementedSaverServiceServer) mustEmbedUnimplementedSaverServiceServer() {}
+func (UnimplementedCollectorServiceServer) mustEmbedUnimplementedCollectorServiceServer() {}
 
-// UnsafeSaverServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SaverServiceServer will
+// UnsafeCollectorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CollectorServiceServer will
 // result in compilation errors.
-type UnsafeSaverServiceServer interface {
-	mustEmbedUnimplementedSaverServiceServer()
+type UnsafeCollectorServiceServer interface {
+	mustEmbedUnimplementedCollectorServiceServer()
 }
 
-func RegisterSaverServiceServer(s grpc.ServiceRegistrar, srv SaverServiceServer) {
-	s.RegisterService(&SaverService_ServiceDesc, srv)
+func RegisterCollectorServiceServer(s grpc.ServiceRegistrar, srv CollectorServiceServer) {
+	s.RegisterService(&CollectorService_ServiceDesc, srv)
 }
 
-func _SaverService_CollectPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CollectorService_CollectPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CollectPostsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SaverServiceServer).CollectPosts(ctx, in)
+		return srv.(CollectorServiceServer).CollectPosts(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SaverService_CollectPosts_FullMethodName,
+		FullMethod: CollectorService_CollectPosts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SaverServiceServer).CollectPosts(ctx, req.(*CollectPostsRequest))
+		return srv.(CollectorServiceServer).CollectPosts(ctx, req.(*CollectPostsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// SaverService_ServiceDesc is the grpc.ServiceDesc for SaverService service.
+// CollectorService_ServiceDesc is the grpc.ServiceDesc for CollectorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var SaverService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "post.SaverService",
-	HandlerType: (*SaverServiceServer)(nil),
+var CollectorService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "post.CollectorService",
+	HandlerType: (*CollectorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CollectPosts",
-			Handler:    _SaverService_CollectPosts_Handler,
+			Handler:    _CollectorService_CollectPosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

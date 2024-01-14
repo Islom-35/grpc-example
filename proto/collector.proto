@@ -5,7 +5,7 @@ package post;
 option go_package = "/pb";
 
 
-service SaverService {
+service CollectorService {
   rpc CollectPosts(CollectPostsRequest) returns (CollectPostsResponse) {}
 }
 

@@ -12,24 +12,33 @@ import (
 )
 
 func main() {
-	auditClient, err := grpc_client.NewClient(5050)
-	log.Println("sdf")
+
+	auditClient, err := grpc_client.NewClient(5050, 5040)
 	if err != nil {
-		log.Println(err)
+		log.Println(err, "port")
 	}
-	router := chi.NewRouter()
-	router.Use(middleware.Logger)
+	defer auditClient.CloseConnection()
 
 	postHandler := handler.NewHandler(*auditClient)
+
+	router := chi.NewRouter()
+	router.Use(middleware.Logger)
 
 	// Testing router
 	router.Get("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Write([]byte("Hello, Chi!"))
 	})
 
-	log.Println("ssfd")
-
 	router.Route("/post", func(r chi.Router) {
-		r.Get("/", postHandler.SavePosts)
+		r.Post("/", postHandler.CollectPosts)
+		r.Get("/{id:[0-9]+}", postHandler.GetPostByID)
+		r.Get("/{pagenum:[0-9]+}", postHandler.GetPage)
+		r.Delete("/{id:[0-9]+}", postHandler.DeletePostByID)
 	})
+
+	err = http.ListenAndServe(":5060", router)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

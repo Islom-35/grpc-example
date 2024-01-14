@@ -12,10 +12,10 @@ import (
 
 type Server struct {
 	grpcSrv    *grpc.Server
-	postServer pb.SaverServiceServer
+	postServer pb.CollectorServiceServer
 }
 
-func New(postServer pb.SaverServiceServer) Server {
+func New(postServer pb.CollectorServiceServer) Server {
 	return Server{
 		grpcSrv:    grpc.NewServer(),
 		postServer: postServer,
@@ -30,7 +30,7 @@ func (s *Server) ListenAndServe(port int) error {
 		return err
 	}
 
-	pb.RegisterSaverServiceServer(s.grpcSrv, s.postServer)
+	pb.RegisterCollectorServiceServer(s.grpcSrv, s.postServer)
 	log.Println("listening on port: ", addr)
 
 	if err := s.grpcSrv.Serve(lis); err != nil {

@@ -1,8 +1,10 @@
 package domain
 
-type PostProvider interface {
-	GetPosts(page string) (PostsResponse, error)
-}
+import "errors"
+
+var ErrPostNotFound = errors.New("error post not found")
+
+
 
 type Data struct {
 	ID     int    `json:"id"`

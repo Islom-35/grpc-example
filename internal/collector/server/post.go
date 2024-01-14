@@ -8,7 +8,7 @@ import (
 
 type CollectorServer struct {
 	service app.CollectorService
-	pb.UnimplementedSaverServiceServer
+	pb.UnimplementedCollectorServiceServer
 }
 
 func NewCollectorServer(service app.CollectorService) CollectorServer {

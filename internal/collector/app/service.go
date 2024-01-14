@@ -45,8 +45,6 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 			postAllChannel <- datas.Data
 		}(i)
 	}
-	
-
 	// Close postAllChannel after all goroutines have finished
 	go func() {
 		wg.Wait()
@@ -75,13 +73,10 @@ func (p *collectorService) Save(ctx context.Context, req *pb.CollectPostsRequest
 	wg.Wait()
 
 	// Check for errors
-	select {
-	case err := <-errorChannel:
-		if err != nil {
-			return nil, err
-		}
-	default:
-		// No errors
+
+	err := <-errorChannel
+	if err != nil {
+		return nil, err
 	}
 
 	return &pb.CollectPostsResponse{}, nil

@@ -32,7 +32,7 @@ func grpcServer() {
 	defer db.Close()
 
 	collectorRepo := postAdapter.NewCollectorRepository(db)
-	postProvider, err := postAdapter.NewClient(time.Second * 20)
+	postProvider, err := postAdapter.NewClient(time.Second * 4)
 	if err != nil {
 		log.Println(err)
 	}
