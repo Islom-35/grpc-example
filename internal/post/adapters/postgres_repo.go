@@ -3,7 +3,7 @@ package adapters
 import (
 	"fmt"
 	pb "imantask/internal/genproto/ppb"
-	"imantask/internal/post-grud/domain"
+	"imantask/internal/post/domain"
 	"log"
 	"strings"
 

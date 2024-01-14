@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	pb "imantask/internal/genproto/ppb"
-	"imantask/internal/post-grud/domain"
+	"imantask/internal/post/domain"
 )
 
 type PostService interface {

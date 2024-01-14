@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	pb 	"imantask/internal/genproto/ppb"
-	"imantask/internal/post-grud/app"
+	"imantask/internal/post/app"
 )
 
 type PostServer struct{

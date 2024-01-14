@@ -2,9 +2,9 @@ package main
 
 import (
 	"imantask/common"
-	postAdapter "imantask/internal/post-grud/adapters"
-	"imantask/internal/post-grud/server"
-	postApp "imantask/internal/post-grud/app"
+	postAdapter "imantask/internal/post/adapters"
+	"imantask/internal/post/server"
+	postApp "imantask/internal/post/app"
 	"log"
 	"os"
 	"time"
