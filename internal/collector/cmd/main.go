@@ -32,7 +32,7 @@ func grpcServer() {
 	defer db.Close()
 
 	collectorRepo := postAdapter.NewCollectorRepository(db)
-	postProvider, err := postAdapter.NewClient(time.Second * 4)
+	postProvider, err := postAdapter.NewClient(time.Second * 10)
 	if err != nil {
 		log.Println(err)
 	}
@@ -46,7 +46,7 @@ func grpcServer() {
 	if err != nil {
 		log.Println(err)
 	}
-	if err := srv.ListenAndServe(5050); err != nil {
+	if err := srv.ListenAndServe(os.Getenv("COLLECTOR_PORT")); err != nil {
 		log.Println(err)
 	}
 

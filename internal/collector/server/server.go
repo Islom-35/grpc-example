@@ -22,8 +22,8 @@ func New(postServer pb.CollectorServiceServer) Server {
 	}
 }
 
-func (s *Server) ListenAndServe(port int) error {
-	addr := fmt.Sprintf(":%d", port)
+func (s *Server) ListenAndServe(port string) error {
+	addr := fmt.Sprintf("%v", port)
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {

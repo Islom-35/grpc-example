@@ -3,11 +3,10 @@ package main
 import (
 	"imantask/common"
 	postAdapter "imantask/internal/post/adapters"
-	"imantask/internal/post/server"
 	postApp "imantask/internal/post/app"
+	"imantask/internal/post/server"
 	"log"
 	"os"
-	"time"
 )
 
 func main() {
@@ -33,12 +32,10 @@ func main() {
 
 	srv := server.New(&postServer)
 
-	log.Println("SERVER STARTED", time.Now())
-
 	if err != nil {
 		log.Println(err)
 	}
-	if err := srv.ListenAndServe(5040); err != nil {
+	if err := srv.ListenAndServe(os.Getenv("POST_PORT")); err != nil {
 		log.Println(err)
 	}
 

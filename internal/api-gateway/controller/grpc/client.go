@@ -18,12 +18,12 @@ type Client struct {
 	postClient    ppb.PostServiceClient
 }
 
-func NewClient(port, port2 int) (*Client, error) {
+func NewClient(port, port2 string) (*Client, error) {
 	var conn *grpc.ClientConn
 	var conn2 *grpc.ClientConn
 
-	addr := fmt.Sprintf("iman_task_collector_app_1:%d", port)
-	addr2:=fmt.Sprintf("iman_task_post_app_1:%d", port2)
+	addr := fmt.Sprintf("iman_task_collector_app_1%v", port)
+	addr2:=fmt.Sprintf("iman_task_post_app_1%v", port2)
 
 	conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {

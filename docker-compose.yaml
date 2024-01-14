@@ -12,8 +12,6 @@ services:
     working_dir: /app
     ports:
       - "5050:5050"
-    # networks:
-    #   - app
     env_file:
       - .env
     environment:
@@ -31,8 +29,6 @@ services:
     working_dir: /app
     ports:
       - "5040:5040"
-    # networks:
-    #   - app
     env_file:
       - .env
     environment:
@@ -48,15 +44,13 @@ services:
       - .:/app
       - ./.go/pkg:/go/pkg
       - ./.go-cache:/go-cache
-      # - $GOPATH/pkg/mod/cache:/go/pkg/mod/cache
+      - $GOPATH/pkg/mod/cache:/go/pkg/mod/cache
     working_dir: /app
     ports:
       - "5060:5060"
 
-    # networks:
-    #   - app
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     environment:
       GOCACHE: /go-cache
     entrypoint: ["./docker/dev/entrypoint.sh", "./internal/api-gateway/cmd/main.go"]
@@ -78,5 +72,3 @@ services:
       POSTGRES_DB: post_db
     ports:
       - "5432"
-    # networks:
-    #   - app
