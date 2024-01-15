@@ -46,10 +46,12 @@ func grpcServer() {
 	if err != nil {
 		log.Println(err)
 	}
-	if err := srv.ListenAndServe(os.Getenv("COLLECTOR_PORT")); err != nil {
+	port :=os.Getenv("COLLECTOR_PORT")
+	if err := srv.ListenAndServe(port); err != nil {
 		log.Println(err)
 	}
 
-	log.Println("listening on port: ", 5050)
+
+	// log.Println("listening on port: ", 5050)
 
 }

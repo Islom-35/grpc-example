@@ -33,7 +33,7 @@ services:
       - .env
     environment:
       GOCACHE: /go-cache
-    entrypoint: ["./docker/dev/entrypoint.sh", "./internal/post-grud/cmd/main.go"]
+    entrypoint: ["./docker/dev/entrypoint.sh", "./internal/post/cmd/main.go"]
 
 
   api_gateway:

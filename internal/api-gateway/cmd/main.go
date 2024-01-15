@@ -30,17 +30,22 @@ func main() {
 		w.Write([]byte("Hello, Chi!"))
 	})
 
+	
+
 	router.Route("/post", func(r chi.Router) {
 		r.Post("/", postHandler.CollectPosts)
 		r.Get("/{id:[0-9]+}", postHandler.GetPostByID)
-		r.Get("/{pagenum:[0-9]+}", postHandler.GetPage)
+		r.Get("/page", postHandler.GetPage)
 		r.Delete("/{id:[0-9]+}", postHandler.DeletePostByID)
 	})
 
-	err = http.ListenAndServe(os.Getenv("GATEWAY_PORT"), router)
+	gPort :=(":5060")
+	err = http.ListenAndServe(gPort, router)
 
 	log.Println("listening on port: ", 5060)
+	log.Println(">>>")
 	if err != nil {
+		
 		log.Fatal(err)
 	}
 
