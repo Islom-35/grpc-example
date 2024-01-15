@@ -36,6 +36,7 @@ func main() {
 		r.Post("/", postHandler.CollectPosts)
 		r.Get("/{id:[0-9]+}", postHandler.GetPostByID)
 		r.Get("/", postHandler.GetPage)
+		r.Put("/",postHandler.UpdatePostByID)
 		r.Delete("/{id:[0-9]+}", postHandler.DeletePostByID)
 	})
 

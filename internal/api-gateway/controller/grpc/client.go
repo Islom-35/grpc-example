@@ -73,6 +73,15 @@ func (c *Client) GetPage(ctx context.Context,Page *ppb.Page)(*ppb.PostResponseLi
 	return posts,nil
 }
 
+func (c *Client) UpdatePostByID(ctx context.Context,inp *ppb.UpdateRequest)error{
+	_, err:=c.postClient.UpdatePostByID(ctx,inp)
+	if err!=nil{
+		log.Printf("UpdateByID(): %v",err)
+		return err
+	}
+	return nil
+}
+
 func (c *Client) DeletePostByID(ctx context.Context,ID *ppb.ID)error{
 	_, err:= c.postClient.DeleteByID(ctx,ID)
 	if err!=nil{

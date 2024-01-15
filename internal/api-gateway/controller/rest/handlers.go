@@ -17,7 +17,13 @@ import (
 
 type Page struct {
 	PageNumber uint32 `json:"pagenumber"`
-	PageSize uint32 `json:"pagesize"`
+	PageSize   uint32 `json:"pagesize"`
+}
+
+type UpdateReq struct {
+	ID    uint32 `json:"id"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
 }
 
 type Handler struct {
@@ -97,14 +103,13 @@ func (h *Handler) GetPage(w http.ResponseWriter, r *http.Request) {
 		cancel()
 		return
 	}
-	pagenumber:=page.PageNumber
-	pagesize :=page.PageSize
+	pagenumber := page.PageNumber
+	pagesize := page.PageSize
 
-	pbPage:=ppb.Page{
+	pbPage := ppb.Page{
 		PageNumber: pagenumber,
-		PageSize: pagesize,
+		PageSize:   pagesize,
 	}
-
 
 	pages, err := h.postClient.GetPage(ctx, &pbPage)
 	if err != nil {
@@ -124,6 +129,44 @@ func (h *Handler) GetPage(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
+func (h *Handler) UpdatePostByID(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	reqBytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var updateReq UpdateReq
+
+	err = json.Unmarshal(reqBytes, &updateReq)
+	if err != nil {
+		log.Println("???")
+		
+		w.WriteHeader(http.StatusBadRequest)
+		cancel()
+		return
+	}
+
+	inp := ppb.UpdateRequest{
+		ID:    updateReq.ID,
+		Title: updateReq.Title,
+		Body:  updateReq.Body,
+	}
+
+	err = h.postClient.UpdatePostByID(ctx, &inp)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		cancel()
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func (h *Handler) DeletePostByID(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -132,7 +175,7 @@ func (h *Handler) DeletePostByID(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		// cancel()
+		cancel()
 		return
 	}
 	log.Println(ID)
@@ -140,12 +183,11 @@ func (h *Handler) DeletePostByID(w http.ResponseWriter, r *http.Request) {
 		ID: ID,
 	}
 
-
 	err = h.postClient.DeletePostByID(ctx, &id)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		// cancel()
+		cancel()
 		return
 	}
 
