@@ -14,6 +14,8 @@ services:
       - "5050:5050"
     env_file:
       - .env
+    depends_on:
+      - db
     environment:
       GOCACHE: /go-cache
     entrypoint: ["./docker/dev/entrypoint.sh", "./internal/collector/cmd/main.go"]
@@ -31,6 +33,9 @@ services:
       - "5040:5040"
     env_file:
       - .env
+    depends_on:
+      - db
+      - collector_app  
     environment:
       GOCACHE: /go-cache
     entrypoint: ["./docker/dev/entrypoint.sh", "./internal/post/cmd/main.go"]
@@ -48,6 +53,10 @@ services:
     working_dir: /app
     ports:
       - "5060:5060"
+    depends_on:
+      - db
+      - collector_app
+      - post_app
 
     env_file:
       - .env
@@ -72,3 +81,4 @@ services:
       POSTGRES_DB: post_db
     ports:
       - "5432"
+    

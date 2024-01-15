@@ -108,8 +108,8 @@ func (h *Handler) GetPage(w http.ResponseWriter, r *http.Request) {
 
 	pages, err := h.postClient.GetPage(ctx, &pbPage)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		cancel()
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 

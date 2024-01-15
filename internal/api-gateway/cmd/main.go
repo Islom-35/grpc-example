@@ -35,7 +35,7 @@ func main() {
 	router.Route("/post", func(r chi.Router) {
 		r.Post("/", postHandler.CollectPosts)
 		r.Get("/{id:[0-9]+}", postHandler.GetPostByID)
-		r.Get("/page", postHandler.GetPage)
+		r.Get("/", postHandler.GetPage)
 		r.Delete("/{id:[0-9]+}", postHandler.DeletePostByID)
 	})
 
