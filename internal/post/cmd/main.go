@@ -28,10 +28,6 @@ func main() {
 	postServer := server.NewPostServer(postService)
 
 	srv := server.New(&postServer)
-
-	if err != nil {
-		log.Println(err)
-	}
 	if err := srv.ListenAndServe(os.Getenv("POST_PORT")); err != nil {
 		log.Println(err)
 	}
