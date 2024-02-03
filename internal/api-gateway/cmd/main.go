@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	grpc_client "imantask/internal/api-gateway/controller/grpc"
 	handler "imantask/internal/api-gateway/controller/rest"
@@ -13,7 +14,7 @@ import (
 )
 
 func main() {
-
+	now :=time.Now()
 	auditClient, err := grpc_client.NewClient(os.Getenv("COLLECTOR_PORT"), os.Getenv("POST_PORT"))
 	if err != nil {
 		log.Println(err, "port")
@@ -39,6 +40,7 @@ func main() {
 		r.Put("/",postHandler.UpdatePostByID)
 		r.Delete("/{id:[0-9]+}", postHandler.DeletePostByID)
 	})
+	log.Println(time.Since(now).String())
 
 	gPort :=(":5060")
 	err = http.ListenAndServe(gPort, router)
