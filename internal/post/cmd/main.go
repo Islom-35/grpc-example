@@ -24,9 +24,6 @@ func main() {
 	defer db.Close()
 
 	postRepo := postAdapter.NewPostRepository(db)
-	if err != nil {
-		log.Println(err)
-	}
 	postService := postApp.NewPostService(postRepo)
 	postServer := server.NewPostServer(postService)
 

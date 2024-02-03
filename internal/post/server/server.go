@@ -24,7 +24,7 @@ func New(postServer pb.PostServiceServer) Server {
 func (s *Server) ListenAndServe(port string) error {
 	addr := fmt.Sprintf("%v", port)
 
-	lis, err := net.Listen("tcp", addr)
+	lis, err := net.Listen("tcp", addr)	
 	if err != nil {
 		return err
 	}
